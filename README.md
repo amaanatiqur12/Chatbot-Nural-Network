@@ -257,21 +257,41 @@ def chat():
 chat()
 ```
 
---------------------------------TEXT SENTIMENT ANAYLSIS------------------------------------------------
+#TEXT SENTIMENT ANAYLSIS
 
 
+
+
+```python
 def stemming(content):
-    #It remove all the things except alphabet
+```
+
+It remove all the things except alphabet
+```python
     stemmed_content = re.sub('[^a-zA-Z]',' ', content)
-    #Convert all the words in lower case
+```
+
+Convert all the words in lower case
+```python 
     stemmed_content = stemmed_content.lower()
-    #Split the sentence
+```
+
+Split the sentence
+```python 
     stemmed_content = stemmed_content.split()
-    #Performing stemming on the words except stopwords
+```
+
+Performing stemming on the words except stopwords
+```python 
     stemmed_content = [port_stem.stem(word) for word in stemmed_content if not word in stopwords.words('english')]
-    #Join all the twitter data(a single sentence) together
+```
+
+Join all the twitter data(a single sentence) together
+```python
     stemmed_content = ' '.join(stemmed_content)
     return stemmed_content
+```
+
 
 def sentiment_analysis():
     column_names = ["target", "id", "date", "Flag", "user", "text"]
