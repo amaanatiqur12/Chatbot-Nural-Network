@@ -1,4 +1,4 @@
------------------------------------ Chatbot neural network---------------------------------------------
+#----------------------------------- Chatbot neural network---------------------------------------------
  
 ```Python
 import json
@@ -11,13 +11,13 @@ import tensorflow
 import random
 ```
 
-"""Saving intents.json file value to data
+Saving intents.json file value to data
  Below is the example of intents.jason data 
 {  "intents": [   {
             "tag": "greeting",
             "patterns": [   "Hi",   "Hey",  ],
             "responses": [   "Hey there!", "Hello! How can I assist you?",] 
-             },  ]  }"""
+             },  ]  }
 ```Python
 with open('intents.json') as file:
     data = json.load(file)
@@ -37,14 +37,14 @@ except:
 ```
 
         
-""" For Example "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"], => This is the pattern
+For Example "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"], => This is the pattern
 This is the result after extends => ['Hi', 'How', 'are', 'you', 'Is', 'anyone', 'there', '?', 'Hello', 'Good', 'day']
 It is using extend
 It will tokenize Each Sentence
 The line wrds = nltk.word_tokenize(pattern) is using the nltk.word_tokenize() function to tokenize the words
 in the given pattern string. Tokenization is the process of breaking down a text into individual words or 
 tokens.Yes, you can use the split() method to split a string into words as an alternative to
-nltk.word_tokenize(). The key difference lies in how they handle punctuation and other non- characters. """
+nltk.word_tokenize(). The key difference lies in how they handle punctuation and other non- characters.
             ```Python
             wrds = nltk.word_tokenize(pattern)
             words.extend(wrds)
@@ -52,9 +52,9 @@ nltk.word_tokenize(). The key difference lies in how they handle punctuation and
 
 
 
-""" Saving wrds values one by one by using append
+Saving wrds values one by one by using append
 For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
-[['Hi'], ['How', 'are', 'you'], ['Is', 'anyone', 'there', '?'], ['Hello'], ['Good', 'day'] """
+[['Hi'], ['How', 'are', 'you'], ['Is', 'anyone', 'there', '?'], ['Hello'], ['Good', 'day'] 
             ```Python
             docs_x.append(wrds)
             ```
@@ -62,8 +62,8 @@ For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good d
 
 
             
- """ Saving tag values one by one, to make a trace which pattern belong to which tag (docs_x(pattern) <=> docs_y(tag))
- => It means the 3 index of docs_x will belong to xyz label of docs_y """
+Saving tag values one by one, to make a trace which pattern belong to which tag (docs_x(pattern) <=> docs_y(tag))
+ => It means the 3 index of docs_x will belong to xyz label of docs_y 
             ```Python
             docs_y.append(intent["tag"])
             ```
@@ -71,7 +71,7 @@ For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good d
 
 
             
-# labels variable store all the tag values in the form of List
+labels variable store all the tag values in the form of List
        ```Python
         if intent['tag'] not in labels:
             labels.append(intent['tag'])
@@ -80,25 +80,25 @@ For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good d
 
 
 
-"""Stemming reduces words to their root form to group similar words together,
+Stemming reduces words to their root form to group similar words together,
 for example, "running" becomes "run," while "ran" and "runner" remain unchanged.
 Stemming =>  Use fixed rules such as remove able, ing etc. to derive a base word
 ability =>  abil
 Lemmatization =>   Use knowledge of a language (a.k.a. linguistic knowledge) to derive a base word
-ability => ability"""
+ability => ability
 ```Python
     words = [stemmer.stem(w.lower()) for w in words if w != "?"]
 ```
     
     
     
-# To remove the duplicate values
+To remove the duplicate values
 ```Python
     words = sorted(list(set(words)))
 ```
 
     
-#As there is no duplicate value, We are only sorting the labels(tag)
+As there is no duplicate value, We are only sorting the labels(tag)
 ```Python
     labels = sorted(labels)
 ```
@@ -110,11 +110,11 @@ ability => ability"""
 ```
 
 
-""" Here in Docs_x each sub array is ilterated and first it get through stemming and then it will check by words with 
+Here in Docs_x each sub array is ilterated and first it get through stemming and then it will check by words with 
 each value of words to each sub arrays of docs_x.
     
 And then it ilterated with 1 and 0 in same length values of words and appends in training 
-For tags it check which tags it there through docs_y and find the values in lables and appends it with value 1 """
+For tags it check which tags it there through docs_y and find the values in lables and appends it with value 1 
 ```Python
     for x, doc in enumerate(docs_x):
        bag = []
@@ -137,7 +137,7 @@ For tags it check which tags it there through docs_y and find the values in labl
 ```
     
 
-"""The line tensorflow.reset_default_graph() is used to clear the default graph stack and reset the global default graph in TensorFlow.
+The line tensorflow.reset_default_graph() is used to clear the default graph stack and reset the global default graph in TensorFlow.
 Here's a breakdown of what it means and why it's used:
 
 TensorFlow Graphs:
@@ -153,7 +153,7 @@ This ensures that any previous operations and nodes are cleared out, and you sta
 It is particularly useful in an interactive environment like Jupyter notebooks where the script might be run multiple times.
 In summary, tensorflow.reset_default_graph() is used to avoid conflicts and ensure a clean state when defining a new
 TensorFlow model. This is important for avoiding issues related to reusing a computational graph that might still
-contain operations from previous model definitions."""
+contain operations from previous model definitions.
 ```Python
 tensorflow.reset_default_graph()
 ```
@@ -162,39 +162,39 @@ tensorflow.reset_default_graph()
 
 
 
-#This is input layer with nodes equal to length of words(number of words in list of words)
+This is input layer with nodes equal to length of words(number of words in list of words)
 ```Python
 net = tflearn.input_data(shape=[None, len(training[0])])
 ```
 
-#Hidden layer
+Hidden layer
 ```Python
 net = tflearn.fully_connected(net, 8)
 ```
-#Hidden Layer
+Hidden Layer
 ```Python
 net = tflearn.fully_connected(net, 8)
 ```
 
-"""Output layer with number of nodes equal to length of Label. And softmax which describe the probability of words in each
-ouput nodes"""
+Output layer with number of nodes equal to length of Label. And softmax which describe the probability of words in each
+ouput nodes
 ```Python
 net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
 ```
 
-"""In summary, the line net = tflearn.regression(net) integrates the regression layer, which finalizes the training setup
+In summary, the line net = tflearn.regression(net) integrates the regression layer, which finalizes the training setup
 for your neural network. This is crucial for the training process, as it defines how the model learns from the data by
 minimizing the loss
   
 The tflearn.regression layer is essential because it sets up the loss function, optimizer, and training configuration 
-for your model. """
+for your model.
 ```Python
 net = tflearn.regression(net)
 ```
 
-"""The line model = tflearn.DNN(net) is crucial as it creates an instance of the deep neural network using the defined
+The line model = tflearn.DNN(net) is crucial as it creates an instance of the deep neural network using the defined
  architecture. This model instance provides methods to train, evaluate, and make predictions with the neural network, 
- encapsulating all the necessary configurations for practical usage."""
+ encapsulating all the necessary configurations for practical usage.
 ```Python
 model = tflearn.DNN(net)
 ```
@@ -204,8 +204,8 @@ model = tflearn.DNN(net)
 
 
 
-"""we will fit our data to the model to train it. The number of epochs we set is the amount of times that the model will 
-see the same information while training."""
+we will fit our data to the model to train it. The number of epochs we set is the amount of times that the model will 
+see the same information while training.
 ```Python
 try:
     model.load("model.tflearn")
@@ -216,7 +216,7 @@ except:
 
 
 
-#Same concept as bag of Words(Counting each words and for this it will be one(if it occur twice but we consider it as one))
+Same concept as bag of Words(Counting each words and for this it will be one(if it occur twice but we consider it as one))
 ```Python
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
@@ -234,7 +234,7 @@ def bag_of_words(s, words):
 
 
 
-#It will predict(which tag it belong) and will choise randomly from the tags the response(only one).
+It will predict(which tag it belong) and will choise randomly from the tags the response(only one).
 ```Python
 def chat():
     print("Start talking with the bot (type quit to stop)!")
