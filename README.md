@@ -257,7 +257,7 @@ def chat():
 chat()
 ```
 
-#TEXT SENTIMENT ANAYLSIS
+# TEXT SENTIMENT ANAYLSIS
 
 
 
@@ -293,40 +293,73 @@ Join all the twitter data(a single sentence) together
 ```
 
 
+
+
+```python
 def sentiment_analysis():
     column_names = ["target", "id", "date", "Flag", "user", "text"]
-
     pickle_path = "processed_twitter_data.pkl"
+```
 
-    # Check if the pickle file exists
+Check if the pickle file exists
+```python
     if os.path.exists(pickle_path):
-        # Load the processed DataFrame from the pickle file
+```
+
+Load the processed DataFrame from the pickle file
+```python
         with open(pickle_path, 'rb') as file:
             twitter_data = pickle.load(file)
     else:
-        #As it is reading values as 1 rows, therefore we used column name to be the first values.
-        twitter_data=pd.read_csv(r"C:\Users\Lenovo\Desktop\GitHub\Chatbot\training.1600000.processed.noemoticon.csv", names=column_names ,encoding="ISO-8859-1")
-        #converting values 4(positive) to 1
-        twitter_data.replace({'target': {4: 1}}, inplace=True)
-        #Applying stemming by calling stemming class on the data(training data)
-        twitter_data['stemmed_content'] = twitter_data['text'].apply(stemming)
+```
 
-        # Save the processed DataFrame to a pickle file
+As it is reading values as 1 rows, therefore we used column name to be the first values.
+```python
+        twitter_data=pd.read_csv(r"C:\Users\Lenovo\Desktop\GitHub\Chatbot\training.1600000.processed.noemoticon.csv", names=column_names ,encoding="ISO-8859-1")
+```
+
+converting values 4(positive) to 1
+```python
+        twitter_data.replace({'target': {4: 1}}, inplace=True)
+```
+
+Applying stemming by calling stemming class on the data(training data)
+```python
+        twitter_data['stemmed_content'] = twitter_data['text'].apply(stemming)
+```
+
+Save the processed DataFrame to a pickle file
+```python
         with open(pickle_path, 'wb') as file:
             pickle.dump(twitter_data, file)
+```
+
+
+
+
+```python
     X = twitter_data['stemmed_content'].values
     Y = twitter_data['target'].values
-    """Spliting data into test and training data, test_size => 20% test and 80% training, stratify => All the values different
-    will be splitting in proper way. Means here 0 and 1 will be splitted in equal in tain and in test.
-    randon_state => will split value every time in same way """
+```
+
+Spliting data into test and training data, test_size => 20% test and 80% training, stratify => All the values different
+will be splitting in proper way. Means here 0 and 1 will be splitted in equal in tain and in test.
+randon_state => will split value every time in same way 
+```python
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, stratify=Y, random_state=2)
+```
+
+```python
     global vectorizer
     vectorizer = TfidfVectorizer()
     X_train_vector_path = "X_train_vector.pkl"
     X_test_vector_path = "X_test_vector.pkl"
     vectorizer_path = "vectorizer.pkl"
     if os.path.exists(X_train_vector_path) and os.path.exists(X_test_vector_path) and os.path.exists(vectorizer_path):
-        # Load the vectorized data from pickle files if they exist
+```
+
+Load the vectorized data from pickle files if they exist
+```python
         with open(vectorizer_path, 'rb') as file:
             vectorizer = pickle.load(file)
         with open(X_train_vector_path, 'rb') as file:
@@ -334,21 +367,33 @@ def sentiment_analysis():
         with open(X_test_vector_path, 'rb') as file:
             X_test = pickle.load(file)
     else:
-        # Vectorize the text data
+```
 
+Vectorize the text data
+```python
         vectorizer = TfidfVectorizer()
-        """We are converting textual data into vector numeric data, first we have to convert train data to fit_transform .
-        Similarly it will convert test data accordingly similar to train data."""
+```
+
+We are converting textual data into vector numeric data, first we have to convert train data to fit_transform .
+Similarly it will convert test data accordingly similar to train data.
+```python
         X_train = vectorizer.fit_transform(X_train)
         X_test = vectorizer.transform(X_test)
 
         with open(vectorizer_path, 'wb') as file:
             pickle.dump(vectorizer, file)
-        # Save the vectorized data to pickle files
+```
+
+
+Save the vectorized data to pickle files
+```python
         with open(X_train_vector_path, 'wb') as file:
             pickle.dump(X_train, file)
         with open(X_test_vector_path, 'wb') as file:
             pickle.dump(X_test, file)
+```
+
+```python
     global model2
     Model_path = "Model.pkl"
     if os.path.exists(Model_path):
@@ -356,13 +401,18 @@ def sentiment_analysis():
 
             model2 = pickle.load(file)
     else:
-        #Training Machine learning Model
+```
+
+Training Machine learning Model
+```python
         model2 = LogisticRegression(max_iter=1000)
         model2.fit(X_train, Y_train)
         with open(Model_path, 'wb') as file:
             pickle.dump(model, file)
     data="All is good"
+```
 
+```python
 def sentiment_analysis_users(User_chat):
     str1=stemming(User_chat)
     X_test1 = vectorizer.transform([str1])
@@ -374,4 +424,4 @@ def sentiment_analysis_users(User_chat):
     else:
         data = "negative"
     return data
-
+```
