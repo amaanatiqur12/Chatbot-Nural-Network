@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block start %}
+<div>
+    <div class="chat-container">
+        <!-- Conversation messages will be displayed here -->
+        {% for message in messages %}
+            {% if message.user1 %}
+                <p class="message user1">
+                    <strong style="display: inline">You:<span style=" font-size: 12px;">{{ message.sentiment_analysis }}</span></strong> {{ message.user1 }}
+                </p>
+            {% endif %}
+            {% if message.user2 %}
+                <p class="message user2"><strong>Bot:</strong> {{ message.user2 }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <form method="post" action="{% url 'chat' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea placeholder="Type here" id="promptext" name="text" class="textarea_home"></textarea>
+            <button type="submit" class="button_home">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
