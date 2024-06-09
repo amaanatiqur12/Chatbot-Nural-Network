@@ -45,10 +45,10 @@ The line wrds = nltk.word_tokenize(pattern) is using the nltk.word_tokenize() fu
 in the given pattern string. Tokenization is the process of breaking down a text into individual words or 
 tokens.Yes, you can use the split() method to split a string into words as an alternative to
 nltk.word_tokenize(). The key difference lies in how they handle punctuation and other non- characters.
-            ```Python
+```Python
             wrds = nltk.word_tokenize(pattern)
             words.extend(wrds)
-            ```
+```
 
 
 
