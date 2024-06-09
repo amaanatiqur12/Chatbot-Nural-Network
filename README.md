@@ -1,4 +1,4 @@
-#----------------------------------- Chatbot neural network---------------------------------------------
+# Chatbot neural network
  
 ```Python
 import json
