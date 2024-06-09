@@ -18,6 +18,7 @@ import random```
             "patterns": [   "Hi",   "Hey",  ],
             "responses": [   "Hey there!", "Hello! How can I assist you?",] 
              },  ]  }"""
+```Python
 with open('intents.json') as file:
     data = json.load(file)
 
@@ -32,7 +33,7 @@ except:
     docs_y = []
 
     for intent in data['intents']:
-        for pattern in intent['patterns']:
+        for pattern in intent['patterns']:```
 
         
 """ For Example "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"], => This is the pattern
@@ -43,30 +44,33 @@ The line wrds = nltk.word_tokenize(pattern) is using the nltk.word_tokenize() fu
 in the given pattern string. Tokenization is the process of breaking down a text into individual words or 
 tokens.Yes, you can use the split() method to split a string into words as an alternative to
 nltk.word_tokenize(). The key difference lies in how they handle punctuation and other non- characters. """
-            
+            ```Python
             wrds = nltk.word_tokenize(pattern)
-            words.extend(wrds)
+            words.extend(wrds)```
 
 
 
 """ Saving wrds values one by one by using append
 For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
 [['Hi'], ['How', 'are', 'you'], ['Is', 'anyone', 'there', '?'], ['Hello'], ['Good', 'day'] """
-            docs_x.append(wrds)
+            ```Python
+            docs_x.append(wrds)```
             
 
 
             
  """ Saving tag values one by one, to make a trace which pattern belong to which tag (docs_x(pattern) <=> docs_y(tag))
  => It means the 3 index of docs_x will belong to xyz label of docs_y """
-            docs_y.append(intent["tag"])
+            ```Python
+            docs_y.append(intent["tag"])```
             
 
 
             
 # labels variable store all the tag values in the form of List
+       ```Python
         if intent['tag'] not in labels:
-            labels.append(intent['tag'])
+            labels.append(intent['tag'])```
             
 
 
@@ -77,21 +81,24 @@ Stemming =>  Use fixed rules such as remove able, ing etc. to derive a base word
 ability =>  abil
 Lemmatization =>   Use knowledge of a language (a.k.a. linguistic knowledge) to derive a base word
 ability => ability"""
-    words = [stemmer.stem(w.lower()) for w in words if w != "?"]
+```Python
+    words = [stemmer.stem(w.lower()) for w in words if w != "?"]```
     
     
     
 # To remove the duplicate values
-    words = sorted(list(set(words)))
+```Python
+    words = sorted(list(set(words)))```
 
     
 #As there is no duplicate value, We are only sorting the labels(tag)
-    labels = sorted(labels)
+```Python
+    labels = sorted(labels)```
 
-
+```Python
     training = []
     output = []
-    out_empty = [0 for _ in range(len(labels))]
+    out_empty = [0 for _ in range(len(labels))]```
 
 
 """ Here in Docs_x each sub array is ilterated and first it get through stemming and then it will check by words with 
@@ -99,6 +106,7 @@ each value of words to each sub arrays of docs_x.
     
 And then it ilterated with 1 and 0 in same length values of words and appends in training 
 For tags it check which tags it there through docs_y and find the values in lables and appends it with value 1 """
+```Python
     for x, doc in enumerate(docs_x):
        bag = []
        wrds = [stemmer.stem(w.lower()) for w in doc]
@@ -110,12 +118,12 @@ For tags it check which tags it there through docs_y and find the values in labl
         output_row = out_empty[:]
         output_row[labels.index(docs_y[x])] = 1
         training.append(bag)
-        output.append(output_row)
+        output.append(output_row)```
 
 
-
+```Python
     training = numpy.array(training)
-    output = numpy.array(output)
+    output = numpy.array(output)```
     
 
 """The line tensorflow.reset_default_graph() is used to clear the default graph stack and reset the global default graph in TensorFlow.
@@ -135,36 +143,43 @@ It is particularly useful in an interactive environment like Jupyter notebooks w
 In summary, tensorflow.reset_default_graph() is used to avoid conflicts and ensure a clean state when defining a new
 TensorFlow model. This is important for avoiding issues related to reusing a computational graph that might still
 contain operations from previous model definitions."""
-tensorflow.reset_default_graph()
+```Python
+tensorflow.reset_default_graph()```
 
 
 
 
 
 #This is input layer with nodes equal to length of words(number of words in list of words)
-net = tflearn.input_data(shape=[None, len(training[0])])
+```Python
+net = tflearn.input_data(shape=[None, len(training[0])])```
 
 #Hidden layer
-net = tflearn.fully_connected(net, 8)
+```Python
+net = tflearn.fully_connected(net, 8)```
 #Hidden Layer
-net = tflearn.fully_connected(net, 8)
+```Python
+net = tflearn.fully_connected(net, 8)```
 
 """Output layer with number of nodes equal to length of Label. And softmax which describe the probability of words in each
 ouput nodes"""
-net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
+```Python
+net = tflearn.fully_connected(net, len(output[0]), activation="softmax")```
 
 """In summary, the line net = tflearn.regression(net) integrates the regression layer, which finalizes the training setup
 for your neural network. This is crucial for the training process, as it defines how the model learns from the data by
 minimizing the loss
   
 The tflearn.regression layer is essential because it sets up the loss function, optimizer, and training configuration 
-for your model. """  
-net = tflearn.regression(net)
+for your model. """
+```Python
+net = tflearn.regression(net)```
 
 """The line model = tflearn.DNN(net) is crucial as it creates an instance of the deep neural network using the defined
  architecture. This model instance provides methods to train, evaluate, and make predictions with the neural network, 
  encapsulating all the necessary configurations for practical usage."""
-model = tflearn.DNN(net)
+```Python
+model = tflearn.DNN(net)```
 
 
 
@@ -173,15 +188,17 @@ model = tflearn.DNN(net)
 
 """we will fit our data to the model to train it. The number of epochs we set is the amount of times that the model will 
 see the same information while training."""
+```Python
 try:
     model.load("model.tflearn")
 except:
     model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
-    model.save("model.tflearn")
+    model.save("model.tflearn")```
 
 
 
 #Same concept as bag of Words(Counting each words and for this it will be one(if it occur twice but we consider it as one))
+```Python
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
 
@@ -193,11 +210,12 @@ def bag_of_words(s, words):
             if w == se:
                 bag[i] = 1
 
-    return numpy.array(bag)
+    return numpy.array(bag)```
 
 
 
 #It will predict(which tag it belong) and will choise randomly from the tags the response(only one).
+```Python
 def chat():
     print("Start talking with the bot (type quit to stop)!")
     while True:
@@ -213,10 +231,10 @@ def chat():
             if tg['tag'] == tag:
                 responses = tg['responses']
 
-        print(random.choice(responses))
-
+        print(random.choice(responses))```
+```Python
 chat()
-
+```
 
 --------------------------------TEXT SENTIMENT ANAYLSIS------------------------------------------------
 
