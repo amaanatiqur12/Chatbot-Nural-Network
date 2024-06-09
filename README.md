@@ -12,14 +12,14 @@ import tensorflow
 import random
 
 
-# Saving intents.json file value to data
-""" Below is the example of intents.jason data 
+Saving intents.json file value to data
+ Below is the example of intents.jason data 
 {  "intents": [   {
             "tag": "greeting",
             "patterns": [   "Hi",   "Hey",  ],
             "responses": [   "Hey there!", "Hello! How can I assist you?",] 
              },  ]  }
-"""
+
 with open('intents.json') as file:
     data = json.load(file)
 
