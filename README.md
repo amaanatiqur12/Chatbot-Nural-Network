@@ -8,8 +8,8 @@ stemmer = LancasterStemmer()
 import numpy
 import tflearn
 import tensorflow
-import random```
-
+import random
+```
 
 """Saving intents.json file value to data
  Below is the example of intents.jason data 
