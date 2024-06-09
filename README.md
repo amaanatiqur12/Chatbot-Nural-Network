@@ -55,27 +55,27 @@ nltk.word_tokenize(). The key difference lies in how they handle punctuation and
 Saving wrds values one by one by using append
 For Example patterns: ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
 [['Hi'], ['How', 'are', 'you'], ['Is', 'anyone', 'there', '?'], ['Hello'], ['Good', 'day'] 
-            ```Python
+```Python
             docs_x.append(wrds)
-            ```
+```
             
 
 
             
 Saving tag values one by one, to make a trace which pattern belong to which tag (docs_x(pattern) <=> docs_y(tag))
  => It means the 3 index of docs_x will belong to xyz label of docs_y 
-            ```Python
+```Python
             docs_y.append(intent["tag"])
-            ```
+ ```
             
 
 
             
 labels variable store all the tag values in the form of List
-       ```Python
+```Python
         if intent['tag'] not in labels:
             labels.append(intent['tag'])
-            ```
+```
             
 
 
